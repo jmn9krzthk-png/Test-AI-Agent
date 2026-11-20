@@ -374,3 +374,20 @@ textarea,select{font:inherit;padding:.7em .9em;border:1.5px solid var(--line);bo
 .p-uploads small{color:var(--muted)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--cream);padding:12px 20px;border-radius:999px;font-weight:600;z-index:60;box-shadow:0 10px 30px -10px rgba(0,0,0,.5);max-width:calc(100% - 32px)}
 .notfound{text-align:center;display:grid;gap:18px;justify-items:center}
+/* registration */
+.reg-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;counter-reset:r}
+.reg-steps li{counter-increment:r;display:grid;gap:6px;font-weight:700;font-size:.9rem;color:var(--muted)}
+.reg-steps li::before{content:"";height:6px;border-radius:999px;background:var(--line)}
+.reg-steps li.on{color:var(--ink)}
+.reg-steps li.on::before{background:var(--green)}
+.reg-step{border:0;margin:0;padding:0;display:grid;gap:16px;min-width:0}
+.reg-step legend{padding:0;margin-bottom:6px}
+.reg-step h2{font-size:1.6rem}
+.reg-step input[type=text],.reg-step input[type=email],.reg-step input[type=tel],.reg-step input[type=number],.reg-step input[type=date]{font:inherit;padding:.7em .9em;border:1.5px solid var(--line);border-radius:12px;background:var(--cream);color:var(--ink);width:100%}
+.reg-step .invalid{border-color:var(--coral)!important}
+.reg-nav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.reg-nav .btn:last-child,.reg-nav #regNext{margin-left:auto}
+#regDone{gap:14px}
+#regDone dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0}
+#regDone dt{font-weight:700;color:var(--muted)}
+#regDone dd{margin:0}

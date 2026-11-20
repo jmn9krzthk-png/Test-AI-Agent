@@ -27,8 +27,8 @@ LIGHTBOX = LIGHTBOX[:LIGHTBOX.index('</div>', LIGHTBOX.index('close')) + 6]
 # ---------------------------------------------------------------- page registry
 # slug: (nav label or None, title tag, meta description, h1-ish name for breadcrumbs)
 PAGES = {}
-def page(slug, title, desc, crumb, body, schema=None, hero_img=None, gallery=False, noindex=False, parent=None, og=None, ptype='WebPage'):
-    PAGES[slug] = dict(title=title, desc=desc, crumb=crumb, body=body, schema=schema or [], hero_img=hero_img,
+def page(slug, title, desc, crumb, body, schema=None, hero_img=None, gallery=False, noindex=False, parent=None, og=None, ptype='WebPage', preview_only=False):
+    PAGES[slug] = dict(preview_only=preview_only, title=title, desc=desc, crumb=crumb, body=body, schema=schema or [], hero_img=hero_img,
                        gallery=gallery, noindex=noindex, parent=parent, og=og, ptype=ptype)
 
 NAV = [('pricing-and-services', 'Pricing & Services'), ('new-clients', 'New Clients'), ('about', 'About'),
@@ -498,7 +498,7 @@ def p_new(c):
     return (page_hero('New clients', 'We’re so excited to meet you and your dog',
                       'To keep every dog safe, comfortable and happy, all new guests complete a tour and at least one full-day trial day before regular daycare or boarding.',
                       'svc-trial.jpg', 'A papillon sitting in a colorful ball pit',
-                      ('' if c.mode == 'preview' else f'<a class="btn btn-coral" href="{PORTAL}" target="_blank" rel="noopener">New client registration</a>') + f'<a class="btn btn-line" href="{c.link("faq")}">FAQs</a>', tall=True)
+                      (f'<a class="btn btn-coral" href="{c.link("register")}">New client registration</a>' if c.mode == 'preview' else f'<a class="btn btn-coral" href="{PORTAL}" target="_blank" rel="noopener">New client registration</a>') + f'<a class="btn btn-line" href="{c.link("faq")}">FAQs</a>', tall=True)
             + nc
             + '''<section><div class="wrap split">
   <div class="prose"><span class="eyebrow">Our promise</span><h2>Your dog’s comfort comes first</h2>
@@ -510,6 +510,66 @@ def p_new(c):
 page('new-clients', 'New Clients: Tour & Trial Day | Almost Home Kennels',
      'New to Almost Home Kennels? See vaccine and age requirements, check if your dog is a good fit, and pick a trial day (Mon, Wed, Thu, Fri, $36).',
      'New Clients', p_new, hero_img='svc-trial.jpg', schema=[faq_schema([0, 1, 3, 16])])
+
+def p_register(c):
+    def f(id, label, typ='text', ac='', req=True, ph=''):
+        return f'<div class="field"><label for="{id}">{label}{"" if req else " <span class=small>(optional)</span>"}</label><input type="{typ}" id="{id}" name="{id}"{(" autocomplete=" + chr(34) + ac + chr(34)) if ac else ""}{" required" if req else ""}{(" placeholder=" + chr(34) + ph + chr(34)) if ph else ""}></div>'
+    def yn(id, q):
+        return f'<div class="field"><span class="lbl">{q}</span><div class="chips"><label class="chipbox" for="{id}-y"><input type="radio" name="{id}" id="{id}-y" value="Yes" required>Yes</label><label class="chipbox" for="{id}-n"><input type="radio" name="{id}" id="{id}-n" value="No">No</label><label class="chipbox" for="{id}-u"><input type="radio" name="{id}" id="{id}-u" value="Not sure">Not sure</label></div></div>'
+    return (page_hero('New client registration', 'Register your dog',
+                      'Tell us about you and your dog. Our team will review your registration and reach out to schedule your tour and trial day. No account or password needed.')
+            + f"""<section style="padding-top:0"><div class="wrap" style="max-width:900px">
+<form id="regForm" class="panel" novalidate>
+  <ol class="reg-steps" aria-label="Registration progress"><li data-s="1" class="on">You</li><li data-s="2">Your dog</li><li data-s="3">Health</li><li data-s="4">Trial day</li></ol>
+
+  <fieldset class="reg-step" data-step="1"><legend><h2>About you</h2></legend>
+    <div class="row2">{f('r-first','First name','text','given-name')}{f('r-last','Last name','text','family-name')}</div>
+    <div class="row2">{f('r-email','Email','email','email')}{f('r-phone','Mobile phone','tel','tel')}</div>
+    <div class="row2">{f('r-town','Town','text','address-level2',ph='Wright City')}{f('r-zip','ZIP code','text','postal-code')}</div>
+    <h3 style="margin-top:8px">Emergency contact</h3>
+    <div class="row2">{f('r-ecname','Name','text','')}{f('r-ecphone','Phone','tel','')}</div>
+  </fieldset>
+
+  <fieldset class="reg-step" data-step="2" hidden><legend><h2>About your dog</h2></legend>
+    <div class="row2">{f('r-dname','Dog’s name')}{f('r-breed','Breed or mix')}</div>
+    <div class="row2">{f('r-bday','Birthday (approximate is fine)','date')}{f('r-weight','Weight (lbs)','number',req=False)}</div>
+    <div class="field"><span class="lbl">Sex</span><div class="chips">
+      <label class="chipbox" for="r-sex-mn"><input type="radio" name="r-sex" id="r-sex-mn" value="Male, neutered" required>Male, neutered</label>
+      <label class="chipbox" for="r-sex-fs"><input type="radio" name="r-sex" id="r-sex-fs" value="Female, spayed">Female, spayed</label>
+      <label class="chipbox" for="r-sex-m"><input type="radio" name="r-sex" id="r-sex-m" value="Male, intact">Male, intact</label>
+      <label class="chipbox" for="r-sex-f"><input type="radio" name="r-sex" id="r-sex-f" value="Female, intact">Female, intact</label></div></div>
+    {yn('r-dogs','Is your dog friendly with other dogs?')}
+    {yn('r-crate','Is your dog comfortable resting in a kennel or crate?')}
+    <div class="field"><label for="r-notes">Anything else we should know? <span class="small">(optional)</span></label><textarea id="r-notes" rows="3" placeholder="Feeding routine, fears, favorite games…"></textarea></div>
+    <p class="fit-msg" id="regAge" hidden></p>
+  </fieldset>
+
+  <fieldset class="reg-step" data-step="3" hidden><legend><h2>Health &amp; vet</h2></legend>
+    <div class="row2">{f('r-vet','Veterinary clinic')}{f('r-vetphone','Clinic phone','tel')}</div>
+    <div class="field"><span class="lbl">Current vaccinations</span><p class="small">All three are required before your dog’s first visit.</p><div class="chips">
+      <label class="chipbox" for="r-v1"><input type="checkbox" id="r-v1" class="rvax">Rabies</label>
+      <label class="chipbox" for="r-v2"><input type="checkbox" id="r-v2" class="rvax">DHPP (Distemper/Parvo)</label>
+      <label class="chipbox" for="r-v3"><input type="checkbox" id="r-v3" class="rvax">Bordetella</label></div></div>
+    <label class="drop" for="r-file"><input type="file" id="r-file" accept="image/*,.pdf" multiple><b>Upload vaccine records</b><span>Photos or PDFs from your vet</span></label>
+    <ul class="p-uploads" id="regFiles"></ul>
+    <div class="field"><label for="r-meds">Medications <span class="small">(optional)</span></label><textarea id="r-meds" rows="2" placeholder="Name, dose and timing"></textarea></div>
+  </fieldset>
+
+  <fieldset class="reg-step" data-step="4" hidden><legend><h2>Pick a trial day</h2></legend>
+    <p class="small">Trial days run Monday, Wednesday, Thursday and Friday. Drop off 8–9 AM, pick up 3–5 PM, $36 per dog. We’ll confirm the date with you.</p>
+    <div class="days" id="regDays"></div>
+    <div class="field"><label for="r-heard">How did you hear about us? <span class="small">(optional)</span></label><select id="r-heard"><option value="">Choose one</option><option>Google search</option><option>Facebook</option><option>Friend or family</option><option>Veterinarian</option><option>Drove by</option><option>Other</option></select></div>
+    <label class="chipbox" for="r-agree" style="border-radius:14px;align-items:flex-start"><input type="checkbox" id="r-agree" required style="margin-top:4px">I understand drop-offs and pick-ups are scheduled, and that boarding cancellations within 48 hours may be charged one night.</label>
+  </fieldset>
+
+  <p class="fit-msg" id="regErr" hidden role="alert"></p>
+  <div class="reg-nav"><button type="button" class="btn btn-line" id="regBack" hidden>Back</button><button type="button" class="btn btn-green" id="regNext">Next</button><button type="submit" class="btn btn-coral" id="regSubmit" hidden>Submit registration</button></div>
+</form>
+<div class="panel" id="regDone" hidden role="status"></div>
+</div></section>""")
+page('register', 'New Client Registration | Almost Home Kennels',
+     'Register your dog with Almost Home Kennels in Wright City, MO and request a trial day. No account needed.',
+     'Register', p_register, parent='new-clients', preview_only=True, noindex=True)
 
 def p_about(c):
     apart = [('A small, familiar team', 'Your dog is cared for by familiar people who take the time to learn their personality, routines, preferences and comfort level.'),
@@ -692,6 +752,7 @@ for mode in ('preview', 'dist'):
     shutil.rmtree(out, ignore_errors=True)
     c = Ctx(mode)
     for slug in PAGES:
+        if PAGES[slug]['preview_only'] and mode != 'preview': continue
         s = render(c, slug)
         if mode == 'preview':
             write(os.path.join(out, (slug or 'index') + '.html'), s)
@@ -702,7 +763,7 @@ for mode in ('preview', 'dist'):
     shutil.copytree(os.path.join(SITE, 'img'), os.path.join(out, 'img'))
     for f in ('favicon.png', 'apple-touch-icon.png'): shutil.copy(os.path.join(SITE, f), os.path.join(out, f))
     if mode == 'dist':
-        urls = [s for s in PAGES if s != '404']
+        urls = [s for s in PAGES if s != '404' and not PAGES[s]['preview_only']]
         pri = {'': '1.0', 'pricing-and-services': '0.9', 'dog-boarding-in-wright-city': '0.9', 'dog-daycare-wright-city': '0.9', 'new-clients': '0.8'}
         sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n'
         for s in urls:

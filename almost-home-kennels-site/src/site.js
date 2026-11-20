@@ -192,6 +192,65 @@
     try{navigator.clipboard.writeText(el.textContent.trim()).then(ok,fb)}catch(_){fb()}
   })});
 
+
+  /* ---------- new client registration (open access, preview) ---------- */
+  var RF=$('#regForm');
+  if(RF){
+    var rstep=1,rsteps=$$('.reg-step',RF),trial=null,rfiles=[];
+    var rerr=function(m){var e=$('#regErr');e.hidden=!m;e.textContent=m||''};
+    var ageMonths=function(){var v=$('#r-bday').value;if(!v)return null;var b=new Date(v+'T12:00');return (today.getFullYear()-b.getFullYear())*12+(today.getMonth()-b.getMonth())-(today.getDate()<b.getDate()?1:0)};
+    var ageNote=function(){var m=ageMonths(),sx=($('input[name="r-sex"]:checked',RF)||{}).value||'',n=$('#regAge');
+      if(m===null){n.hidden=true;return ''}
+      var msg='';if(m<4)msg='Dogs need to be at least 4 months old and up to date on puppy vaccines. You can still register now and we’ll schedule the trial day once your pup is ready.';
+      else if(m>8&&/intact/.test(sx))msg='Dogs over 8 months need to be spayed or neutered before they can attend.';
+      n.hidden=!msg;n.textContent=msg;return msg};
+    var rvalid=function(n){
+      var fs=rsteps[n-1],ok=true,first=null;
+      $$('input[required],select[required]',fs).forEach(function(i){
+        var bad=i.type==='radio'?!$('input[name="'+i.name+'"]:checked',fs):i.type==='checkbox'?!i.checked:!i.value.trim()||(i.type==='email'&&!/^\S+@\S+\.\S+$/.test(i.value));
+        var tgt=(i.type==='radio'||i.type==='checkbox')?i.closest('.chips,.chipbox'):i;if(tgt)tgt.classList.toggle('invalid',bad);
+        if(bad){ok=false;first=first||i}});
+      if(!ok){rerr('Please fill in the highlighted fields.');first.focus();return false}
+      if(n===4&&!trial){rerr('Pick a trial day to continue.');return false}
+      rerr('');return true};
+    var rshow=function(n){rstep=n;rsteps.forEach(function(f,i){f.hidden=i!==n-1});
+      $$('.reg-steps li',RF).forEach(function(l,i){l.classList.toggle('on',i<n)});
+      $('#regBack').hidden=n===1;$('#regNext').hidden=n===4;$('#regSubmit').hidden=n!==4;rerr('');
+      RF.scrollIntoView({behavior:'smooth',block:'start'})};
+    $('#regNext').onclick=function(){if(rvalid(rstep))rshow(rstep+1)};
+    $('#regBack').onclick=function(){rshow(rstep-1)};
+    $('#r-bday').addEventListener('change',ageNote);
+    $$('input[name="r-sex"]',RF).forEach(function(i){i.addEventListener('change',ageNote)});
+    RF.addEventListener('input',function(e){var t=e.target;if(t.classList)t.classList.remove('invalid');var c=t.closest&&t.closest('.chips,.chipbox');if(c)c.classList.remove('invalid')});
+    var rfi=$('#r-file'),rdz=rfi.closest('.drop');
+    var addFiles=function(fl){Array.prototype.forEach.call(fl,function(x){rfiles.push(x.name)});$('#regFiles').innerHTML=rfiles.map(function(n){return '<li><span>'+esc(n)+'</span><span class="badge good">Attached</span></li>'}).join('')};
+    rfi.addEventListener('change',function(){addFiles(rfi.files)});
+    ['dragover','dragenter'].forEach(function(ev){rdz.addEventListener(ev,function(e){e.preventDefault();rdz.classList.add('over')})});
+    ['dragleave','drop'].forEach(function(ev){rdz.addEventListener(ev,function(){rdz.classList.remove('over')})});
+    rdz.addEventListener('drop',function(e){e.preventDefault();addFiles(e.dataTransfer.files)});
+    var rd=$('#regDays'),DN2=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    for(var k2=2;k2<=21;k2++)(function(d){if([1,3,4,5].indexOf(d.getDay())<0)return;
+      var b=document.createElement('button');b.type='button';b.className='day';b.setAttribute('aria-pressed','false');
+      b.innerHTML='<small>'+DN2[d.getDay()]+'</small><b>'+d.getDate()+'</b><small>'+d.toLocaleString('en-US',{month:'short'})+'</small>';
+      b.setAttribute('aria-label',nice(d,{weekday:'long',month:'long',day:'numeric'}));
+      b.onclick=function(){trial=d;$$('.day',rd).forEach(function(x){x.setAttribute('aria-pressed',x===b)});rerr('')};rd.appendChild(b)})(addDays(today,k2));
+    RF.addEventListener('submit',function(e){e.preventDefault();if(!rvalid(4))return;
+      var v=function(id){return $('#'+id).value.trim()};
+      var vax=$$('.rvax',RF).filter(function(i){return i.checked}).map(function(i){return i.parentNode.textContent.trim()});
+      var rows=[['Owner',v('r-first')+' '+v('r-last')],['Contact',v('r-email')+' · '+v('r-phone')],['Dog',v('r-dname')+', '+v('r-breed')],
+        ['Vaccines marked current',vax.length?vax.join(', '):'None yet'],['Records attached',rfiles.length?rfiles.length+' file'+(rfiles.length===1?'':'s'):'None yet'],
+        ['Requested trial day',nice(trial,{weekday:'long',month:'long',day:'numeric'})+', drop off 8–9 AM']];
+      var check=document.body.getAttribute('data-img')==='/img/'?'/checklists-and-scheduling/':'checklists-and-scheduling.html';
+      RF.hidden=true;var d=$('#regDone');d.hidden=false;
+      d.innerHTML='<span class="eyebrow">Registration received</span><h2>Thanks, '+esc(v('r-first'))+'! We can’t wait to meet '+esc(v('r-dname'))+'.</h2>'+
+        '<p class="lede">Our team will call or text you to confirm the trial day and answer any questions.</p><dl>'+rows.map(function(r){return '<dt>'+esc(r[0])+'</dt><dd>'+esc(r[1])+'</dd>'}).join('')+'</dl>'+
+        ((vax.length<3||!rfiles.length)?'<p class="fit-msg">Before the trial day, please send proof of all three vaccines (Rabies, DHPP and Bordetella).</p>':'')+
+        '<p class="small">Preview site: this form isn’t connected yet, so nothing was sent.</p>'+
+        '<div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-green" href="'+check+'">See the packing checklist</a><button type="button" class="btn btn-line" id="regAgain">Register another dog</button></div>';
+      $('#regAgain').onclick=function(){RF.reset();rfiles=[];trial=null;$('#regFiles').innerHTML='';$$('.day',rd).forEach(function(x){x.setAttribute('aria-pressed','false')});d.hidden=true;RF.hidden=false;rshow(1)};
+      d.scrollIntoView({behavior:'smooth',block:'start'})});
+  }
+
   /* ---------- client portal (front-end demo, sample data) ---------- */
   var P=$('#portal');
   if(P){
