@@ -1,0 +1,310 @@
+
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top"><img src="img/logo-white.png" alt="Almost Home Kennels: Boarding &amp; Grooming" width="620" height="159"></a>
+    <nav aria-label="Main">
+      <a class="nl" href="#services">Pricing &amp; Services</a>
+      <a class="nl" href="#new-clients">New Clients</a>
+      <a class="nl" href="#gallery">Photos</a>
+      <a class="nl" href="#faq">FAQ</a>
+      <a class="btn btn-coral" href="https://almosthomekennelsmo.propetware.com" target="_blank" rel="noopener">Client Portal</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Dog boarding &amp; daycare · Wright City, MO</span>
+        <h1>Where dogs feel <span class="hl">almost home.</span></h1>
+        <p class="lede">Every dog deserves a safe, comfortable place to stay, with structure, fun, and care that feels like home. Supervised outdoor play, quiet rest, and a small team who learns your dog by name.</p>
+        <div class="cta">
+          <a class="btn btn-green" href="#new-clients">New clients start here</a>
+          <a class="btn btn-line" href="#estimate">Estimate a stay</a>
+        </div>
+      </div>
+      <div class="collage">
+        <img class="main" src="img/hero-yard.jpg" alt="Dogs playing around a kiddie pool in the grassy yard outside the kennel building" width="2000" height="1334">
+        <img class="inset" src="img/pool-pup.jpg" alt="A fluffy little dog sitting in a red splash pool" width="1200" height="800">
+        <div class="badge"><b>24/7</b><span>someone on site</span></div>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="facts">
+        <div class="fact"><b>$43</b><span>per night boarding</span></div>
+        <div class="fact"><b>$36</b><span>full day of daycare</span></div>
+        <div class="fact"><b>4</b><span>familiar faces on our team</span></div>
+        <div class="fact"><b>Licensed</b><span>facility, temperature-controlled</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" style="padding-top:0">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Pricing &amp; services</span>
+        <h2>More than just a stay</h2>
+        <p class="lede">Supervised play and rest, feeding and medication management come with every visit. Add a bath or some enrichment to make it even better.</p>
+      </div>
+      <div class="svc-tabs" role="tablist" aria-label="Services" id="svcTabs"></div>
+      <div class="svc-panel" role="tabpanel" id="svcPanel" aria-live="polite">
+        <img id="svcImg" src="img/svc-boarding.jpg" alt="" width="1200" height="800">
+        <div class="svc-body">
+          <h3 id="svcTitle" style="font-size:1.9rem">Overnight boarding</h3>
+          <div class="price" id="svcPrice"></div>
+          <p id="svcDesc" class="lede"></p>
+          <ul class="ticks" id="svcList"></ul>
+          <p class="small" id="svcNote"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESTIMATOR -->
+  <section class="est" id="estimate">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Plan your trip</span>
+        <h2>What will a stay cost?</h2>
+        <p class="lede">Pick your dates and dogs to see an estimate using our current rates. Your final total is confirmed when we approve your reservation.</p>
+      </div>
+      <div class="est-grid">
+        <div class="panel">
+          <div class="row2">
+            <div class="field"><label for="e-in">Drop-off date</label><input type="date" id="e-in"></div>
+            <div class="field"><label for="e-out">Pick-up date</label><input type="date" id="e-out"></div>
+          </div>
+          <div class="step-row">
+            <div class="t"><b>Adult dogs</b><small>Over 8 months · $43 / night</small></div>
+            <div class="stepper" data-key="adults"><button type="button" data-d="-1" aria-label="One fewer adult dog">−</button><output aria-live="polite">1</output><button type="button" data-d="1" aria-label="One more adult dog">+</button></div>
+          </div>
+          <div class="step-row">
+            <div class="t"><b>Puppies</b><small>8 months &amp; under · $47 / night</small></div>
+            <div class="stepper" data-key="pups"><button type="button" data-d="-1" aria-label="One fewer puppy">−</button><output aria-live="polite">0</output><button type="button" data-d="1" aria-label="One more puppy">+</button></div>
+          </div>
+          <div class="step-row">
+            <div class="t"><b>Extra daycare days</b><small>Per dog · $36 / day</small></div>
+            <div class="stepper" data-key="daycare"><button type="button" data-d="-1" aria-label="One fewer daycare day">−</button><output aria-live="polite">0</output><button type="button" data-d="1" aria-label="One more daycare day">+</button></div>
+          </div>
+          <div class="field">
+            <span class="lbl">Add-ons <span class="small">(priced when you book)</span></span>
+            <div style="display:flex;flex-wrap:wrap;gap:8px" id="addons">
+              <button type="button" class="chip" aria-pressed="false">Bath</button>
+              <button type="button" class="chip" aria-pressed="false">Nail trim</button>
+              <button type="button" class="chip" aria-pressed="false">Nail grind</button>
+              <button type="button" class="chip" aria-pressed="false">Enrichment</button>
+              <button type="button" class="chip" aria-pressed="false">Photo updates</button>
+            </div>
+          </div>
+        </div>
+        <aside class="total" aria-live="polite">
+          <span class="eyebrow" style="color:var(--sun)">Estimated total</span>
+          <div class="amt" id="eTotal">$0</div>
+          <div class="lines" id="eLines"></div>
+          <p class="note" id="eNote">Pick up by 12 PM on your last day for no extra charge.</p>
+          <a class="btn btn-coral" href="https://almosthomekennelsmo.propetware.com" target="_blank" rel="noopener">Request these dates</a>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Life at Almost Home</span>
+        <h2>Fresh air, happy play, good naps</h2>
+        <p class="lede">Real dogs, real days. Tap any photo to see it bigger.</p>
+      </div>
+      <div class="filters" id="galFilters">
+        <button type="button" class="chip" aria-pressed="true" data-f="all">All</button>
+        <button type="button" class="chip" aria-pressed="false" data-f="play">Play time</button>
+        <button type="button" class="chip" aria-pressed="false" data-f="rest">Nap time</button>
+        <button type="button" class="chip" aria-pressed="false" data-f="enrich">Enrichment</button>
+        <button type="button" class="chip" aria-pressed="false" data-f="people">With the team</button>
+      </div>
+      <div class="masonry" id="gal"></div>
+    </div>
+  </section>
+
+  <!-- NEW CLIENTS -->
+  <section id="new-clients" style="background:var(--paper)">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">New clients</span>
+        <h2>We're so excited to meet your dog</h2>
+        <p class="lede">Every new guest goes through four steps so we can make sure Almost Home is a comfortable, safe fit.</p>
+      </div>
+      <ol class="steps">
+        <li><h3>Create your account</h3><p>Register in our client portal and add your dog's info and vaccine records.</p></li>
+        <li><h3>We reach out</h3><p>Our team contacts you to learn about your dog and answer questions.</p></li>
+        <li><h3>Tour &amp; trial day</h3><p>A full day of daycare so we can see how your dog plays, rests and settles.</p></li>
+        <li><h3>Book stays</h3><p>Once approved, request daycare and boarding right from the portal.</p></li>
+      </ol>
+
+      <div class="nc-grid">
+        <div class="panel" style="background:var(--cream)">
+          <div style="display:grid;gap:6px">
+            <h3>Is my dog a good fit?</h3>
+            <p class="small">Flip on everything that's true for your dog.</p>
+          </div>
+          <div id="fit">
+            <label class="toggle" for="f1"><span><b>Current on Rabies, DHPP &amp; Bordetella</b><small>Proof required before drop-off</small></span><input class="switch" type="checkbox" id="f1"></label>
+            <label class="toggle" for="f2"><span><b>At least 4 months old</b><small>And up to date on puppy shots</small></span><input class="switch" type="checkbox" id="f2"></label>
+            <label class="toggle" for="f3"><span><b>Spayed or neutered (if over 8 months)</b><small>Younger pups are fine as they are</small></span><input class="switch" type="checkbox" id="f3"></label>
+            <label class="toggle" for="f4"><span><b>Friendly with dogs and people</b><small>Enjoys or tolerates group play</small></span><input class="switch" type="checkbox" id="f4"></label>
+            <label class="toggle" for="f5"><span><b>Can rest calmly in a kennel</b><small>Without nonstop barking or distress</small></span><input class="switch" type="checkbox" id="f5"></label>
+          </div>
+          <div class="meter" aria-hidden="true"><i id="fitBar"></i></div>
+          <p class="fit-msg" id="fitMsg" aria-live="polite">0 of 5 checked. Keep going!</p>
+        </div>
+
+        <div class="panel" style="background:var(--cream)">
+          <div style="display:grid;gap:6px">
+            <h3>Pick a trial day</h3>
+            <p class="small">Trial days run Monday, Wednesday, Thursday and Friday, by appointment only. Choose a date to see the schedule.</p>
+          </div>
+          <div class="days" id="days"></div>
+          <div class="slot">
+            <div><b>8–9 AM</b><span>Drop off</span></div>
+            <div><b>3–5 PM</b><span>Pick up</span></div>
+            <div><b>$36</b><span>per dog</span></div>
+          </div>
+          <p class="fit-msg" id="dayMsg" aria-live="polite">No date picked yet.</p>
+          <p class="small">Bring: a leash (all dogs arrive leashed), vaccine records submitted beforehand, and food only if your dog needs a meal during the visit. We don't offer walk-in tours.</p>
+        </div>
+      </div>
+
+      <div class="expect">
+        <div><h3>Comfort</h3><p>No signs of extreme discomfort or anxiety after an adjustment period.</p></div>
+        <div><h3>Sociability</h3><p>Interacts positively and appropriately with dogs and humans.</p></div>
+        <div><h3>Respect</h3><p>Reads social cues and respects boundaries with dogs and staff.</p></div>
+        <div><h3>Self restraint</h3><p>Plays without excessive jumping, nipping, mounting, barking or barging.</p></div>
+        <div><h3>Sharing</h3><p>Shares water bowls, staff, friends and space without guarding.</p></div>
+        <div><h3>Rest</h3><p>Settles in a kennel without constant barking, scratching or whining.</p></div>
+        <div class="deal"><h3>Deal breakers</h3><ul><li>Aggression toward dogs or people</li><li>Extreme anxiety or distress</li><li>Excessive or nonstop barking</li><li>Resource guarding</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section id="team">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Meet the care team</span>
+        <h2>The people behind the care</h2>
+        <p class="lede">A small team of dog lovers who believe every dog deserves to be known, understood, and cared for as an individual. Our kennel manager lives on the property, so someone is here day and night.</p>
+      </div>
+      <div class="team-grid">
+        <figure class="member" style="margin:0"><img src="img/team-addy.jpg" alt="Addy holding a fluffy white doodle" loading="lazy" width="800" height="1200"><figcaption><b>Addy</b><span>Kennel manager</span></figcaption></figure>
+        <figure class="member" style="margin:0"><img src="img/team-olivia.jpg" alt="Olivia hugging a yellow Lab" loading="lazy" width="800" height="1200"><figcaption><b>Olivia</b><span>Kennel care team</span></figcaption></figure>
+        <figure class="member" style="margin:0"><img src="img/team-jim.jpg" alt="Jim holding a small grey shaggy dog" loading="lazy" width="800" height="1200"><figcaption><b>Jim</b><span>Operations &amp; facility care</span></figcaption></figure>
+        <figure class="member" style="margin:0"><img src="img/team-carrie.jpg" alt="Carrie holding a cream doodle" loading="lazy" width="800" height="1200"><figcaption><b>Carrie</b><span>Operations &amp; client care</span></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="quote" aria-label="Client review">
+    <img src="img/hero-play.jpg" alt="" loading="lazy" width="2000" height="1334">
+    <div class="wrap">
+      <blockquote>
+        <span class="stars" aria-label="5 out of 5 stars">★★★★★</span>
+        <p>“They are so wonderful with her. I can tell she has the best time. When I drop her off, she hardly cares that I'm leaving. And when I pick her up, she naps all day.”</p>
+        <footer>Melanie Townsend</footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- PACKING CHECKLIST -->
+  <section id="checklist">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">Packing checklist</span>
+        <h2>What to bring, and what to leave home</h2>
+        <p class="lede">Tick things off as you pack. Your checklist stays saved in this browser.</p>
+      </div>
+      <div class="pack-grid">
+        <div class="panel">
+          <div class="prog"><h3>Bring with your dog</h3><span class="small" id="packCount" aria-live="polite">0 of 5 packed</span></div>
+          <div class="meter" aria-hidden="true"><i id="packBar"></i></div>
+          <ul class="pack" id="pack">
+            <li><label for="p1"><input type="checkbox" id="p1"><span><b>Regular food</b><small>Enough for the whole stay, with clear feeding instructions</small></span></label></li>
+            <li><label for="p2"><input type="checkbox" id="p2"><span><b>Medications</b><small>Labeled with dosage, timing and written instructions</small></span></label></li>
+            <li><label for="p3"><input type="checkbox" id="p3"><span><b>Leash and secure collar or harness</b><small>All dogs arrive leashed</small></span></label></li>
+            <li><label for="p4"><input type="checkbox" id="p4"><span><b>Vaccine records submitted</b><small>Rabies, Bordetella and Distemper/Parvo, before you arrive</small></span></label></li>
+            <li><label for="p5"><input type="checkbox" id="p5"><span><b>Reservation confirmed</b><small>A request isn't booked until our team confirms it</small></span></label></li>
+          </ul>
+          <button type="button" class="linkbtn" id="packReset">Clear checklist</button>
+        </div>
+        <div class="panel">
+          <h3>Please leave at home</h3>
+          <ul class="pack leave">
+            <li><span><b>Toys and chews</b><small>Unless our team specifically approves them</small></span></li>
+            <li><span><b>Food and water bowls</b><small>We provide the dishes your dog needs</small></span></li>
+            <li><span><b>Valuable or irreplaceable items</b><small>Personal belongings can get lost or damaged</small></span></li>
+          </ul>
+          <p class="small">Bedding is optional. We prefer to use our own, but if you bring some, make sure it's clean, washable and labeled.</p>
+          <img src="img/svc-boarding.jpg" alt="A doodle relaxing on a daybed with a plaid blanket" loading="lazy" style="width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:14px;max-width:100%" width="1200" height="800">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" style="padding-top:0">
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow">FAQ</span>
+        <h2>Questions? We've got answers.</h2>
+      </div>
+      <div class="faq-tools">
+        <label for="faqQ" class="small" style="font-weight:700">Search the FAQ</label>
+        <input type="search" id="faqQ" placeholder="Try “vaccines”, “cancel” or “medication”" style="max-width:520px">
+        <div class="filters" id="faqCats" style="margin:0" hidden></div>
+      </div>
+      <div class="faq-list" id="faqList"></div>
+      <p class="faq-empty" id="faqEmpty" hidden>No questions match that search. Call us at 636-459-9900 and we'll help.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="band" id="contact">
+    <div class="wrap band-grid">
+      <div style="display:grid;gap:16px">
+        <span class="eyebrow">Ready when you are</span>
+        <h2>Ready to schedule your dog's stay?</h2>
+        <p class="policy">All drop-offs and pick-ups are scheduled. Boarding cancellations within 48 hours may be charged one night; daycare and grooming within 24 hours may be charged in full. Major holidays may require a nonrefundable $50 deposit.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px">
+          <a class="btn btn-coral" href="https://almosthomekennelsmo.propetware.com" target="_blank" rel="noopener">Open client portal</a>
+          <a class="btn btn-line" style="color:var(--band-ink)" href="#new-clients">New client? Start here</a>
+        </div>
+      </div>
+      <dl class="contacts">
+        <div class="contact"><div><dt>Call or text</dt><dd id="cPhone">636-459-9900</dd></div><button class="copy" type="button" data-copy="cPhone">Copy</button></div>
+        <div class="contact"><div><dt>Email</dt><dd id="cEmail">Almosthomekennelsmo1@yahoo.com</dd></div><button class="copy" type="button" data-copy="cEmail">Copy</button></div>
+        <div class="contact"><div><dt>Facebook</dt><dd><a href="https://www.facebook.com/AlmostHomeKennels" target="_blank" rel="noopener">facebook.com/AlmostHomeKennels</a></dd></div></div>
+        <div class="contact"><div><dt>Location</dt><dd>Wright City, Missouri</dd></div></div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <img src="img/logo-white.png" alt="Almost Home Kennels" width="620" height="159" loading="lazy">
+    <small>© 2026 Almost Home Kennels · Dog boarding, daycare, baths, nail care &amp; enrichment in Wright City, MO</small>
+  </div>
+</footer>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="nav prev" type="button" aria-label="Previous photo">‹</button>
+  <figure><img id="lbImg" src="" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button class="nav next" type="button" aria-label="Next photo">›</button>
+  <button class="nav close" type="button" aria-label="Close photo viewer">✕</button>
+</div>
+
