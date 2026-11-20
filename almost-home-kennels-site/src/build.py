@@ -498,7 +498,7 @@ def p_new(c):
     return (page_hero('New clients', 'We’re so excited to meet you and your dog',
                       'To keep every dog safe, comfortable and happy, all new guests complete a tour and at least one full-day trial day before regular daycare or boarding.',
                       'svc-trial.jpg', 'A papillon sitting in a colorful ball pit',
-                      f'<a class="btn btn-coral" href="{PORTAL}" target="_blank" rel="noopener">New client registration</a><a class="btn btn-line" href="{c.link("faq")}">FAQs</a>', tall=True)
+                      ('' if c.mode == 'preview' else f'<a class="btn btn-coral" href="{PORTAL}" target="_blank" rel="noopener">New client registration</a>') + f'<a class="btn btn-line" href="{c.link("faq")}">FAQs</a>', tall=True)
             + nc
             + '''<section><div class="wrap split">
   <div class="prose"><span class="eyebrow">Our promise</span><h2>Your dog’s comfort comes first</h2>
