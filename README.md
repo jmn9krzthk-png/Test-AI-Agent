@@ -1,3 +1,5 @@
+> **Test Social Media 001** — a copy of [Postiz](https://github.com/gitroomhq/postiz-app) (upstream commit `2f24e10f`), imported for testing. Licensed under AGPL-3.0; see `LICENSE`.
+
 <p align="center">
   <a href="https://postiz.com/" target="_blank">
   <picture>
